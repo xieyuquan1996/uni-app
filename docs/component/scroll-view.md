@@ -121,25 +121,22 @@ export default {
     export default {
         data() {
             return {
-                triggered: false
+                triggered: false,
+                freshing: false
             }
-        },
-        onLoad() {
-            this._freshing = false;
-            setTimeout(() => {
-                this.triggered = true;
-            }, 1000)
         },
         methods: {
             onPulling(e) {
                 console.log("onpulling", e);
             },
             onRefresh() {
-                if (this._freshing) return;
-                this._freshing = true;
+                const that = this;// 防止this指向问题，如果在setTimeout直接使用this，那么这个this是直接指向setTimeout。
+                if (that.freshing) return;
+                that.freshing = true;
+                that.triggered = true;
                 setTimeout(() => {
-                    this.triggered = false;
-                    this._freshing = false;
+                    that.triggered = false;
+                    that.freshing = false;
                 }, 3000)
             },
             onRestore() {
